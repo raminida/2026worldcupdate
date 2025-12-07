@@ -2,119 +2,99 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 월드컵 조별리그 일정</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 월드컵 일정</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Flag Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.11.0/css/flag-icons.min.css"/>
     
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f3f4f6; }
-        .korea-match { background-color: #eff6ff; border-left: 4px solid #3b82f6; }
-        .korea-match-calendar { background-color: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; font-weight: bold; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f3f4f6; -webkit-overflow-scrolling: touch; }
+        .korea-match { background-color: #eff6ff; border-left: 3px solid #3b82f6; }
+        .korea-match-text { color: #1e40af; font-weight: bold; }
         
-        /* Unified Calendar Grid */
+        /* PC Calendar Grid */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 1px;
-            background-color: #e5e7eb; /* Grid gap color */
+            background-color: #e5e7eb;
             border: 1px solid #e5e7eb;
         }
-
         .calendar-header-cell {
             background-color: #f3f4f6;
-            padding: 0.5rem;
+            padding: 0.75rem;
             text-align: center;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.875rem;
             color: #4b5563;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        @media (min-width: 768px) {
-            .calendar-header-cell { padding: 0.75rem; font-size: 0.875rem; }
-        }
-
         .calendar-day {
             background-color: white;
-            min-height: 100px;
-            padding: 0.25rem;
-        }
-        @media (min-width: 768px) {
-            .calendar-day { padding: 0.5rem; }
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
-
-        .hidden-transition {
-            display: none;
-            opacity: 0;
-        }
-        .visible-transition {
-            display: block;
-            opacity: 1;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            min-height: 120px;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .dimmed {
-            opacity: 0.2;
-            pointer-events: none;
+        /* Mobile Vertical Calendar */
+        .mobile-calendar-day {
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem;
         }
-        
-        /* Calendar Nav Buttons */
-        .cal-nav-btn {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 9999px;
-            width: 32px;
-            height: 32px;
+        .mobile-date-header {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            gap: 0.5rem;
         }
-        .cal-nav-btn:hover { background: #f3f4f6; color: #3b82f6; }
-        .cal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .mobile-match-card {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .mobile-match-card.korea {
+            background-color: #eff6ff;
+            border-color: #bfdbfe;
+        }
 
-        /* Flag Icon Fixes */
-        .fi { width: 1.5em; height: 1.5em; background-size: contain; background-position: center; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .match-flag { font-size: 24px; } 
-
+        /* Utils */
+        .fi { width: 1.2em; height: 1.2em; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .match-flag { font-size: 20px; } 
+        
+        .visible-transition { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .dimmed { opacity: 0.3; pointer-events: none; filter: grayscale(100%); }
+        .cal-nav-btn { background: white; border: 1px solid #e5e7eb; border-radius: 9999px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .cal-nav-btn:disabled { opacity: 0.3; }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen pb-20">
 
-    <!-- Header & D-Day -->
+    <!-- Header -->
     <header class="bg-gradient-to-r from-slate-900 to-blue-900 text-white shadow-xl sticky top-0 z-50">
-        <div class="max-w-[95%] mx-auto px-4 py-4"> 
+        <div class="max-w-7xl mx-auto px-4 py-4"> 
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    <div class="flex items-center gap-2">
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2">
                         <i class="fas fa-futbol text-yellow-400 text-2xl"></i>
                         <h1 class="text-xl md:text-2xl font-black tracking-tight">2026 FIFA 월드컵</h1>
                     </div>
-                    <p class="text-blue-200 text-xs mt-1 font-medium ml-8">📅 한국시간(KST) 기준</p>
+                    <p class="text-blue-200 text-xs mt-1 font-medium">📅 한국시간(KST) 기준</p>
                 </div>
-                
-                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-                    <button onclick="downloadAllICS()" class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs md:text-sm font-bold py-2 px-4 rounded-full shadow-lg transition flex items-center gap-2 whitespace-nowrap">
-                        <i class="fas fa-download"></i>
-                        <span>전체 일정 다운로드</span>
+                <div class="flex items-center gap-3">
+                    <button onclick="downloadAllICS()" class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition flex items-center gap-2">
+                        <i class="fas fa-download"></i> <span class="hidden md:inline">전체 일정 다운로드</span><span class="md:hidden">일정 다운</span>
                     </button>
-                    <!-- D-Day Counter -->
                     <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
                         <span id="d-day" class="text-lg font-bold text-yellow-400 font-mono">D-000</span>
                     </div>
@@ -123,514 +103,353 @@
         </div>
     </header>
 
-    <!-- Controls & Filters -->
-    <div class="max-w-[95%] mx-auto mt-4 px-2 space-y-4"> 
-        
-        <!-- Search & View Toggle -->
-        <div class="flex flex-col md:flex-row gap-4 justify-between bg-white p-3 md:p-4 rounded-xl shadow-sm">
-            <div class="relative flex-grow max-w-md">
+    <!-- Controls -->
+    <div class="max-w-7xl mx-auto mt-4 px-3 space-y-4"> 
+        <div class="flex flex-col md:flex-row gap-3 justify-between bg-white p-3 rounded-xl shadow-sm">
+            <div class="relative flex-grow md:max-w-md">
                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 <input type="text" id="search-input" placeholder="국가명/조 검색 (예: 대한민국, A조)" 
-                       class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base">
+                       class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm">
             </div>
-            
             <div class="flex bg-gray-100 p-1 rounded-lg">
-                <button onclick="switchView('list')" id="btn-list" class="flex-1 px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition">
-                    <i class="fas fa-list mr-1"></i> 리스트
-                </button>
-                <button onclick="switchView('calendar')" id="btn-calendar" class="flex-1 px-4 py-2 rounded-md text-sm font-bold shadow-sm bg-white text-gray-800 transition">
-                    <i class="far fa-calendar-alt mr-1"></i> 달력
-                </button>
+                <button onclick="switchView('calendar')" id="btn-calendar" class="flex-1 px-4 py-2 rounded-md text-sm font-bold shadow-sm bg-white text-gray-800 transition">달력</button>
+                <button onclick="switchView('list')" id="btn-list" class="flex-1 px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition">리스트</button>
             </div>
         </div>
 
-        <!-- Group Filter -->
-        <div id="filter-container" class="bg-white p-3 md:p-4 rounded-xl shadow-sm overflow-x-auto transition-all duration-300">
-            <h3 class="text-xs font-bold text-gray-400 mb-2 uppercase">Groups</h3>
-            <div class="flex gap-2 min-w-max" id="group-filters">
-                <button onclick="filterMatches('ALL')" class="filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold shadow-md transition">전체</button>
-                <!-- Group Buttons injected here -->
+        <div id="filter-container" class="bg-white p-3 rounded-xl shadow-sm overflow-x-auto whitespace-nowrap">
+            <div class="flex gap-2" id="group-filters">
+                <button onclick="filterMatches('ALL')" class="filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md transition">전체</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Area -->
-    <div class="max-w-[95%] mx-auto mt-4 px-2 relative min-h-[500px]"> 
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto mt-4 px-3 min-h-[600px]"> 
         
-        <!-- List View -->
-        <div id="list-view" class="hidden-transition">
-            <div id="match-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4"> 
-                <!-- Cards injected here -->
-            </div>
-            <div id="no-results-list" class="hidden text-center py-20">
-                <i class="fas fa-search-minus text-4xl text-gray-300 mb-3"></i>
-                <p class="text-gray-500">검색 결과가 없습니다.</p>
-            </div>
+        <!-- List View (Hidden by default) -->
+        <div id="list-view" class="hidden">
+            <div id="match-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            <div id="no-results-list" class="hidden text-center py-20 text-gray-500">검색 결과가 없습니다.</div>
         </div>
 
         <!-- Calendar View -->
         <div id="calendar-view" class="visible-transition">
             <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
-                <div class="p-3 md:p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                    <div class="flex items-center gap-4 mx-auto md:mx-0">
+                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                    <div class="flex items-center gap-4 mx-auto">
                         <button onclick="changeMonth(-1)" id="prev-month-btn" class="cal-nav-btn"><i class="fas fa-chevron-left"></i></button>
                         <h2 class="text-lg font-bold text-gray-800 w-32 text-center" id="calendar-title">2026년 6월</h2>
                         <button onclick="changeMonth(1)" id="next-month-btn" class="cal-nav-btn"><i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
                 
-                <!-- Scroll Wrapper for Responsive Calendar -->
-                <div class="overflow-x-auto pb-2"> 
-                    <div class="min-w-[800px] md:min-w-[1000px]"> 
-                        <!-- Unified Calendar Grid -->
-                        <div id="calendar-grid-container" class="calendar-grid">
-                            <!-- Headers and Cells injected here together -->
-                        </div>
+                <!-- PC Grid Calendar (Hidden on Mobile) -->
+                <div id="pc-calendar-wrapper" class="hidden md:block">
+                    <div class="calendar-grid bg-gray-200 border-b-0 text-gray-600">
+                        <div class="calendar-header-cell text-red-500">일</div>
+                        <div class="calendar-header-cell">월</div>
+                        <div class="calendar-header-cell">화</div>
+                        <div class="calendar-header-cell">수</div>
+                        <div class="calendar-header-cell">목</div>
+                        <div class="calendar-header-cell">금</div>
+                        <div class="calendar-header-cell text-blue-500">토</div>
                     </div>
+                    <div id="pc-calendar-grid" class="calendar-grid"></div>
+                </div>
+
+                <!-- Mobile Vertical Calendar (Shown on Mobile) -->
+                <div id="mobile-calendar-wrapper" class="block md:hidden">
+                    <div id="mobile-calendar-container"></div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
-        // --- Capacities ---
-        const stadiumInfo = {
-            "멕시코시티 스타디움": "약 87,523석", // Estadio Azteca
-            "에스타디오 과달라하라": "약 49,850석", // Estadio Akron
-            "토론토 스타디움": "약 45,736석", // BMO Field
-            "로스앤젤레스 스타디움": "약 70,240석", // SoFi Stadium
-            "SF 베이 에어리어": "약 68,500석", // Levi's Stadium
-            "뉴욕 뉴저지 스타디움": "약 82,500석", // MetLife Stadium
-            "보스턴 스타디움": "약 65,878석", // Gillette Stadium
-            "BC 플레이스 밴쿠버": "약 54,500석", // BC Place
-            "휴스턴 스타디움": "약 72,220석", // NRG Stadium
-            "댈러스 스타디움": "약 80,000석", // AT&T Stadium
-            "필라델피아 스타디움": "약 69,796석", // Lincoln Financial Field
-            "에스타디오 몬테레이": "약 53,500석", // Estadio BBVA
-            "애틀랜타 스타디움": "약 71,000석", // Mercedes-Benz Stadium
-            "시애틀 스타디움": "약 69,000석", // Lumen Field
-            "마이애미 스타디움": "약 64,767석", // Hard Rock Stadium
-            "캔자스시티 스타디움": "약 76,416석" // Arrowhead Stadium
-        };
+        // --- Data & Helpers ---
+        const stadiumInfo = { "멕시코시티 스타디움":"8.7만", "에스타디오 과달라하라":"4.9만", "토론토 스타디움":"4.5만", "로스앤젤레스 스타디움":"7만", "SF 베이 에어리어":"6.8만", "뉴욕 뉴저지 스타디움":"8.2만", "보스턴 스타디움":"6.5만", "BC 플레이스 밴쿠버":"5.4만", "휴스턴 스타디움":"7.2만", "댈러스 스타디움":"8만", "필라델피아 스타디움":"6.9만", "에스타디오 몬테레이":"5.3만", "애틀랜타 스타디움":"7.1만", "시애틀 스타디움":"6.9만", "마이애미 스타디움":"6.4만", "캔자스시티 스타디움":"7.6만" };
+        const getCapacity = (s) => stadiumInfo[s] ? `(${stadiumInfo[s]})` : "";
+        
+        const teamCodes = { "멕시코":"mx", "남아프리카 공화국":"za", "대한민국":"kr", "캐나다":"ca", "카타르":"qa", "스위스":"ch", "브라질":"br", "모로코":"ma", "아이티":"ht", "스코틀랜드":"gb-sct", "미국":"us", "파라과이":"py", "호주":"au", "독일":"de", "퀴라소":"cw", "코트디부아르":"ci", "에콰도르":"ec", "네덜란드":"nl", "일본":"jp", "튀니지":"tn", "스페인":"es", "카보베르데":"cv", "사우디 아라비아":"sa", "우루과이":"uy", "벨기에":"be", "이집트":"eg", "이란":"ir", "뉴질랜드":"nz", "프랑스":"fr", "세네갈":"sn", "노르웨이":"no", "아르헨티나":"ar", "알제리":"dz", "오스트리아":"at", "요르단":"jo", "포르투갈":"pt", "우즈베키스탄":"uz", "콜롬비아":"co", "잉글랜드":"gb-eng", "크로아티아":"hr", "가나":"gh", "파나마":"pa" };
+        const getFlag = (t) => teamCodes[t] ? `<span class="fi fi-${teamCodes[t]} match-flag"></span>` : `<i class="fas fa-globe text-gray-400"></i>`;
 
-        const getCapacity = (stadium) => stadiumInfo[stadium] || "정보 없음";
-
-        // --- Country Codes for Flag Icons (ISO 3166-1 alpha-2) ---
-        const teamCodes = {
-            "멕시코": "mx", "남아프리카 공화국": "za", "대한민국": "kr", 
-            "캐나다": "ca", "카타르": "qa", "스위스": "ch",
-            "브라질": "br", "모로코": "ma", "아이티": "ht", "스코틀랜드": "gb-sct",
-            "미국": "us", "파라과이": "py", "호주": "au",
-            "독일": "de", "퀴라소": "cw", "코트디부아르": "ci", "에콰도르": "ec",
-            "네덜란드": "nl", "일본": "jp", "튀니지": "tn",
-            "스페인": "es", "카보베르데": "cv", "사우디 아라비아": "sa", "우루과이": "uy",
-            "벨기에": "be", "이집트": "eg", "이란": "ir", "뉴질랜드": "nz",
-            "프랑스": "fr", "세네갈": "sn", "노르웨이": "no",
-            "아르헨티나": "ar", "알제리": "dz", "오스트리아": "at", "요르단": "jo",
-            "포르투갈": "pt", "우즈베키스탄": "uz", "콜롬비아": "co",
-            "잉글랜드": "gb-eng", "크로아티아": "hr", "가나": "gh", "파나마": "pa",
-            // Placeholders / POs
-            "UEFA PO A": "eu", "UEFA PO B": "eu", "UEFA PO C": "eu", "UEFA PO D": "eu",
-            "대륙간 PO 1": "un", "대륙간 PO 2": "un" 
-        };
-
-        const getFlagHTML = (team) => {
-            const code = teamCodes[team];
-            if (code) {
-                if (code === 'un' || code === 'eu') {
-                    return `<i class="fas fa-globe text-gray-400 text-2xl"></i>`;
-                }
-                return `<span class="fi fi-${code} match-flag"></span>`;
-            }
-            return `<i class="far fa-flag text-gray-300"></i>`;
-        };
-
-        // --- Data (조별리그만) ---
         const rawData = [
-            // 6월 12일
-            { id: 1, date: "6월 12일 (금)", month: 6, day: 12, time: "04:00", team1: "멕시코", team2: "남아프리카 공화국", group: "A", stadium: "멕시코시티 스타디움" },
-            { id: 2, date: "6월 12일 (금)", month: 6, day: 12, time: "11:00", team1: "대한민국", team2: "UEFA PO D", group: "A", stadium: "에스타디오 과달라하라" },
-            // 6월 13일
-            { id: 3, date: "6월 13일 (토)", month: 6, day: 13, time: "04:00", team1: "캐나다", team2: "UEFA PO A", group: "B", stadium: "토론토 스타디움" },
-            { id: 4, date: "6월 13일 (토)", month: 6, day: 13, time: "10:00", team1: "미국", team2: "파라과이", group: "D", stadium: "로스앤젤레스 스타디움" },
-            // 6월 14일
-            { id: 5, date: "6월 14일 (일)", month: 6, day: 14, time: "04:00", team1: "카타르", team2: "스위스", group: "B", stadium: "SF 베이 에어리어" },
-            { id: 6, date: "6월 14일 (일)", month: 6, day: 14, time: "07:00", team1: "브라질", team2: "모로코", group: "C", stadium: "뉴욕 뉴저지 스타디움" },
-            { id: 7, date: "6월 14일 (일)", month: 6, day: 14, time: "10:00", team1: "아이티", team2: "스코틀랜드", group: "C", stadium: "보스턴 스타디움" },
-            { id: 8, date: "6월 14일 (일)", month: 6, day: 14, time: "13:00", team1: "호주", team2: "UEFA PO C", group: "D", stadium: "BC 플레이스 밴쿠버" },
-            // 6월 15일
-            { id: 9, date: "6월 15일 (월)", month: 6, day: 15, time: "02:00", team1: "독일", team2: "퀴라소", group: "E", stadium: "휴스턴 스타디움" },
-            { id: 10, date: "6월 15일 (월)", month: 6, day: 15, time: "05:00", team1: "네덜란드", team2: "일본", group: "F", stadium: "댈러스 스타디움" },
-            { id: 11, date: "6월 15일 (월)", month: 6, day: 15, time: "08:00", team1: "코트디부아르", team2: "에콰도르", group: "E", stadium: "필라델피아 스타디움" },
-            { id: 12, date: "6월 15일 (월)", month: 6, day: 15, time: "11:00", team1: "UEFA PO B", team2: "튀니지", group: "F", stadium: "에스타디오 몬테레이" },
-            // 6월 16일
-            { id: 13, date: "6월 16일 (화)", month: 6, day: 16, time: "01:00", team1: "스페인", team2: "카보베르데", group: "H", stadium: "애틀랜타 스타디움" },
-            { id: 14, date: "6월 16일 (화)", month: 6, day: 16, time: "04:00", team1: "벨기에", team2: "이집트", group: "G", stadium: "시애틀 스타디움" },
-            { id: 15, date: "6월 16일 (화)", month: 6, day: 16, time: "07:00", team1: "사우디 아라비아", team2: "우루과이", group: "H", stadium: "마이애미 스타디움" },
-            { id: 16, date: "6월 16일 (화)", month: 6, day: 16, time: "10:00", team1: "이란", team2: "뉴질랜드", group: "G", stadium: "로스앤젤레스 스타디움" },
-            // 6월 17일
-            { id: 17, date: "6월 17일 (수)", month: 6, day: 17, time: "04:00", team1: "프랑스", team2: "세네갈", group: "I", stadium: "뉴욕 뉴저지 스타디움" },
-            { id: 18, date: "6월 17일 (수)", month: 6, day: 17, time: "07:00", team1: "대륙간 PO 2", team2: "노르웨이", group: "I", stadium: "보스턴 스타디움" },
-            { id: 19, date: "6월 17일 (수)", month: 6, day: 17, time: "10:00", team1: "아르헨티나", team2: "알제리", group: "J", stadium: "캔자스시티 스타디움" },
-            { id: 20, date: "6월 17일 (수)", month: 6, day: 17, time: "13:00", team1: "오스트리아", team2: "요르단", group: "J", stadium: "SF 베이 에어리어" },
-            // 6월 18일
-            { id: 21, date: "6월 18일 (목)", month: 6, day: 18, time: "02:00", team1: "포르투갈", team2: "대륙간 PO 1", group: "K", stadium: "휴스턴 스타디움" },
-            { id: 22, date: "6월 18일 (목)", month: 6, day: 18, time: "05:00", team1: "잉글랜드", team2: "크로아티아", group: "L", stadium: "댈러스 스타디움" },
-            { id: 23, date: "6월 18일 (목)", month: 6, day: 18, time: "08:00", team1: "가나", team2: "파나마", group: "L", stadium: "토론토 스타디움" },
-            { id: 24, date: "6월 18일 (목)", month: 6, day: 18, time: "11:00", team1: "우즈베키스탄", team2: "콜롬비아", group: "K", stadium: "멕시코시티 스타디움" },
-            // 6월 19일
-            { id: 25, date: "6월 19일 (금)", month: 6, day: 19, time: "01:00", team1: "UEFA PO D", team2: "남아프리카 공화국", group: "A", stadium: "애틀랜타 스타디움" },
-            { id: 26, date: "6월 19일 (금)", month: 6, day: 19, time: "04:00", team1: "스위스", team2: "UEFA PO A", group: "B", stadium: "로스앤젤레스 스타디움" },
-            { id: 27, date: "6월 19일 (금)", month: 6, day: 19, time: "07:00", team1: "캐나다", team2: "카타르", group: "B", stadium: "BC 플레이스 밴쿠버" },
-            { id: 28, date: "6월 19일 (금)", month: 6, day: 19, time: "10:00", team1: "멕시코", team2: "대한민국", group: "A", stadium: "에스타디오 과달라하라" },
-            // 6월 20일
-            { id: 29, date: "6월 20일 (토)", month: 6, day: 20, time: "04:00", team1: "미국", team2: "호주", group: "D", stadium: "시애틀 스타디움" },
-            { id: 30, date: "6월 20일 (토)", month: 6, day: 20, time: "07:00", team1: "스코틀랜드", team2: "모로코", group: "C", stadium: "보스턴 스타디움" },
-            { id: 31, date: "6월 20일 (토)", month: 6, day: 20, time: "10:00", team1: "브라질", team2: "아이티", group: "C", stadium: "필라델피아 스타디움" },
-            { id: 32, date: "6월 20일 (토)", month: 6, day: 20, time: "13:00", team1: "UEFA PO C", team2: "파라과이", group: "D", stadium: "SF 베이 에어리어" },
-            // 6월 21일
-            { id: 33, date: "6월 21일 (일)", month: 6, day: 21, time: "02:00", team1: "네덜란드", team2: "UEFA PO B", group: "F", stadium: "휴스턴 스타디움" },
-            { id: 34, date: "6월 21일 (일)", month: 6, day: 21, time: "05:00", team1: "독일", team2: "코트디부아르", group: "E", stadium: "토론토 스타디움" },
-            { id: 35, date: "6월 21일 (일)", month: 6, day: 21, time: "09:00", team1: "에콰도르", team2: "퀴라소", group: "E", stadium: "캔자스시티 스타디움" },
-            { id: 36, date: "6월 21일 (일)", month: 6, day: 21, time: "13:00", team1: "튀니지", team2: "일본", group: "F", stadium: "에스타디오 몬테레이" },
-            // 6월 22일
-            { id: 37, date: "6월 22일 (월)", month: 6, day: 22, time: "01:00", team1: "스페인", team2: "사우디 아라비아", group: "H", stadium: "애틀랜타 스타디움" },
-            { id: 38, date: "6월 22일 (월)", month: 6, day: 22, time: "04:00", team1: "벨기에", team2: "이란", group: "G", stadium: "로스앤젤레스 스타디움" },
-            { id: 39, date: "6월 22일 (월)", month: 6, day: 22, time: "07:00", team1: "우루과이", team2: "카보베르데", group: "H", stadium: "마이애미 스타디움" },
-            { id: 40, date: "6월 22일 (월)", month: 6, day: 22, time: "10:00", team1: "뉴질랜드", team2: "이집트", group: "G", stadium: "BC 플레이스 밴쿠버" },
-            // 6월 23일
-            { id: 41, date: "6월 23일 (화)", month: 6, day: 23, time: "02:00", team1: "아르헨티나", team2: "오스트리아", group: "J", stadium: "댈러스 스타디움" },
-            { id: 42, date: "6월 23일 (화)", month: 6, day: 23, time: "06:00", team1: "프랑스", team2: "대륙간 PO 2", group: "I", stadium: "필라델피아 스타디움" },
-            { id: 43, date: "6월 23일 (화)", month: 6, day: 23, time: "09:00", team1: "노르웨이", team2: "세네갈", group: "I", stadium: "뉴욕 뉴저지 스타디움" },
-            { id: 44, date: "6월 23일 (화)", month: 6, day: 23, time: "12:00", team1: "요르단", team2: "알제리", group: "J", stadium: "SF 베이 에어리어" },
-            // 6월 24일
-            { id: 45, date: "6월 24일 (수)", month: 6, day: 24, time: "02:00", team1: "포르투갈", team2: "우즈베키스탄", group: "K", stadium: "휴스턴 스타디움" },
-            { id: 46, date: "6월 24일 (수)", month: 6, day: 24, time: "05:00", team1: "잉글랜드", team2: "가나", group: "L", stadium: "보스턴 스타디움" },
-            { id: 47, date: "6월 24일 (수)", month: 6, day: 24, time: "08:00", team1: "파나마", team2: "크로아티아", group: "L", stadium: "토론토 스타디움" },
-            { id: 48, date: "6월 24일 (수)", month: 6, day: 24, time: "11:00", team1: "콜롬비아", team2: "대륙간 PO 1", group: "K", stadium: "에스타디오 과달라하라" },
-            // 6월 25일
-            { id: 49, date: "6월 25일 (목)", month: 6, day: 25, time: "04:00", team1: "스위스", team2: "캐나다", group: "B", stadium: "BC 플레이스 밴쿠버" },
-            { id: 50, date: "6월 25일 (목)", month: 6, day: 25, time: "04:00", team1: "UEFA PO A", team2: "카타르", group: "B", stadium: "시애틀 스타디움" },
-            { id: 51, date: "6월 25일 (목)", month: 6, day: 25, time: "07:00", team1: "스코틀랜드", team2: "브라질", group: "C", stadium: "마이애미 스타디움" },
-            { id: 52, date: "6월 25일 (목)", month: 6, day: 25, time: "07:00", team1: "모로코", team2: "아이티", group: "C", stadium: "애틀랜타 스타디움" },
-            { id: 53, date: "6월 25일 (목)", month: 6, day: 25, time: "10:00", team1: "UEFA PO D", team2: "멕시코", group: "A", stadium: "멕시코시티 스타디움" },
-            { id: 54, date: "6월 25일 (목)", month: 6, day: 25, time: "10:00", team1: "남아프리카 공화국", team2: "대한민국", group: "A", stadium: "에스타디오 몬테레이" },
-            // 6월 26일
-            { id: 55, date: "6월 26일 (금)", month: 6, day: 26, time: "05:00", team1: "에콰도르", team2: "독일", group: "E", stadium: "뉴욕 뉴저지 스타디움" },
-            { id: 56, date: "6월 26일 (금)", month: 6, day: 26, time: "05:00", team1: "퀴라소", team2: "코트디부아르", group: "E", stadium: "필라델피아 스타디움" },
-            { id: 57, date: "6월 26일 (금)", month: 6, day: 26, time: "08:00", team1: "튀니지", team2: "네덜란드", group: "F", stadium: "댈러스 스타디움" },
-            { id: 58, date: "6월 26일 (금)", month: 6, day: 26, time: "08:00", team1: "일본", team2: "UEFA PO B", group: "F", stadium: "캔자스시티 스타디움" },
-            { id: 59, date: "6월 26일 (금)", month: 6, day: 26, time: "11:00", team1: "UEFA PO C", team2: "미국", group: "D", stadium: "로스앤젤레스 스타디움" },
-            { id: 60, date: "6월 26일 (금)", month: 6, day: 26, time: "11:00", team1: "파라과이", team2: "호주", group: "D", stadium: "SF 베이 에어리어" },
-            // 6월 27일
-            { id: 61, date: "6월 27일 (토)", month: 6, day: 27, time: "04:00", team1: "노르웨이", team2: "프랑스", group: "I", stadium: "보스턴 스타디움" },
-            { id: 62, date: "6월 27일 (토)", month: 6, day: 27, time: "04:00", team1: "세네갈", team2: "대륙간 PO 2", group: "I", stadium: "토론토 스타디움" },
-            { id: 63, date: "6월 27일 (토)", month: 6, day: 27, time: "09:00", team1: "우루과이", team2: "스페인", group: "H", stadium: "에스타디오 과달라하라" },
-            { id: 64, date: "6월 27일 (토)", month: 6, day: 27, time: "09:00", team1: "카보베르데", team2: "사우디 아라비아", group: "H", stadium: "휴스턴 스타디움" },
-            { id: 65, date: "6월 27일 (토)", month: 6, day: 27, time: "12:00", team1: "뉴질랜드", team2: "벨기에", group: "G", stadium: "BC 플레이스 밴쿠버" },
-            { id: 66, date: "6월 27일 (토)", month: 6, day: 27, time: "12:00", team1: "이집트", team2: "이란", group: "G", stadium: "시애틀 스타디움" },
-            // 6월 28일
-            { id: 67, date: "6월 28일 (일)", month: 6, day: 28, time: "06:00", team1: "파나마", team2: "잉글랜드", group: "L", stadium: "뉴욕 뉴저지 스타디움" },
-            { id: 68, date: "6월 28일 (일)", month: 6, day: 28, time: "06:00", team1: "크로아티아", team2: "가나", group: "L", stadium: "필라델피아 스타디움" },
-            { id: 69, date: "6월 28일 (일)", month: 6, day: 28, time: "08:30", team1: "콜롬비아", team2: "포르투갈", group: "K", stadium: "마이애미 스타디움" },
-            { id: 70, date: "6월 28일 (일)", month: 6, day: 28, time: "08:30", team1: "대륙간 PO 1", team2: "우즈베키스탄", group: "K", stadium: "애틀랜타 스타디움" },
-            { id: 71, date: "6월 28일 (일)", month: 6, day: 28, time: "11:00", team1: "요르단", team2: "아르헨티나", group: "J", stadium: "댈러스 스타디움" },
-            { id: 72, date: "6월 28일 (일)", month: 6, day: 28, time: "11:00", team1: "알제리", team2: "오스트리아", group: "J", stadium: "캔자스시티 스타디움" }
+            { id:1, month:6, day:12, time:"04:00", team1:"멕시코", team2:"남아프리카 공화국", group:"A", stadium:"멕시코시티 스타디움" },
+            { id:2, month:6, day:12, time:"11:00", team1:"대한민국", team2:"UEFA PO D", group:"A", stadium:"에스타디오 과달라하라" },
+            { id:3, month:6, day:13, time:"04:00", team1:"캐나다", team2:"UEFA PO A", group:"B", stadium:"토론토 스타디움" },
+            { id:4, month:6, day:13, time:"10:00", team1:"미국", team2:"파라과이", group:"D", stadium:"로스앤젤레스 스타디움" },
+            { id:5, month:6, day:14, time:"04:00", team1:"카타르", team2:"스위스", group:"B", stadium:"SF 베이 에어리어" },
+            { id:6, month:6, day:14, time:"07:00", team1:"브라질", team2:"모로코", group:"C", stadium:"뉴욕 뉴저지 스타디움" },
+            { id:7, month:6, day:14, time:"10:00", team1:"아이티", team2:"스코틀랜드", group:"C", stadium:"보스턴 스타디움" },
+            { id:8, month:6, day:14, time:"13:00", team1:"호주", team2:"UEFA PO C", group:"D", stadium:"BC 플레이스 밴쿠버" },
+            { id:9, month:6, day:15, time:"02:00", team1:"독일", team2:"퀴라소", group:"E", stadium:"휴스턴 스타디움" },
+            { id:10, month:6, day:15, time:"05:00", team1:"네덜란드", team2:"일본", group:"F", stadium:"댈러스 스타디움" },
+            { id:11, month:6, day:15, time:"08:00", team1:"코트디부아르", team2:"에콰도르", group:"E", stadium:"필라델피아 스타디움" },
+            { id:12, month:6, day:15, time:"11:00", team1:"UEFA PO B", team2:"튀니지", group:"F", stadium:"에스타디오 몬테레이" },
+            { id:13, month:6, day:16, time:"01:00", team1:"스페인", team2:"카보베르데", group:"H", stadium:"애틀랜타 스타디움" },
+            { id:14, month:6, day:16, time:"04:00", team1:"벨기에", team2:"이집트", group:"G", stadium:"시애틀 스타디움" },
+            { id:15, month:6, day:16, time:"07:00", team1:"사우디 아라비아", team2:"우루과이", group:"H", stadium:"마이애미 스타디움" },
+            { id:16, month:6, day:16, time:"10:00", team1:"이란", team2:"뉴질랜드", group:"G", stadium:"로스앤젤레스 스타디움" },
+            { id:17, month:6, day:17, time:"04:00", team1:"프랑스", team2:"세네갈", group:"I", stadium:"뉴욕 뉴저지 스타디움" },
+            { id:18, month:6, day:17, time:"07:00", team1:"대륙간 PO 2", team2:"노르웨이", group:"I", stadium:"보스턴 스타디움" },
+            { id:19, month:6, day:17, time:"10:00", team1:"아르헨티나", team2:"알제리", group:"J", stadium:"캔자스시티 스타디움" },
+            { id:20, month:6, day:17, time:"13:00", team1:"오스트리아", team2:"요르단", group:"J", stadium:"SF 베이 에어리어" },
+            { id:21, month:6, day:18, time:"02:00", team1:"포르투갈", team2:"대륙간 PO 1", group:"K", stadium:"휴스턴 스타디움" },
+            { id:22, month:6, day:18, time:"05:00", team1:"잉글랜드", team2:"크로아티아", group:"L", stadium:"댈러스 스타디움" },
+            { id:23, month:6, day:18, time:"08:00", team1:"가나", team2:"파나마", group:"L", stadium:"토론토 스타디움" },
+            { id:24, month:6, day:18, time:"11:00", team1:"우즈베키스탄", team2:"콜롬비아", group:"K", stadium:"멕시코시티 스타디움" },
+            { id:25, month:6, day:19, time:"01:00", team1:"UEFA PO D", team2:"남아프리카 공화국", group:"A", stadium:"애틀랜타 스타디움" },
+            { id:26, month:6, day:19, time:"04:00", team1:"스위스", team2:"UEFA PO A", group:"B", stadium:"로스앤젤레스 스타디움" },
+            { id:27, month:6, day:19, time:"07:00", team1:"캐나다", team2:"카타르", group:"B", stadium:"BC 플레이스 밴쿠버" },
+            { id:28, month:6, day:19, time:"10:00", team1:"멕시코", team2:"대한민국", group:"A", stadium:"에스타디오 과달라하라" },
+            { id:29, month:6, day:20, time:"04:00", team1:"미국", team2:"호주", group:"D", stadium:"시애틀 스타디움" },
+            { id:30, month:6, day:20, time:"07:00", team1:"스코틀랜드", team2:"모로코", group:"C", stadium:"보스턴 스타디움" },
+            { id:31, month:6, day:20, time:"10:00", team1:"브라질", team2:"아이티", group:"C", stadium:"필라델피아 스타디움" },
+            { id:32, month:6, day:20, time:"13:00", team1:"UEFA PO C", team2:"파라과이", group:"D", stadium:"SF 베이 에어리어" },
+            { id:33, month:6, day:21, time:"02:00", team1:"네덜란드", team2:"UEFA PO B", group:"F", stadium:"휴스턴 스타디움" },
+            { id:34, month:6, day:21, time:"05:00", team1:"독일", team2:"코트디부아르", group:"E", stadium:"토론토 스타디움" },
+            { id:35, month:6, day:21, time:"09:00", team1:"에콰도르", team2:"퀴라소", group:"E", stadium:"캔자스시티 스타디움" },
+            { id:36, month:6, day:21, time:"13:00", team1:"튀니지", team2:"일본", group:"F", stadium:"에스타디오 몬테레이" },
+            { id:37, month:6, day:22, time:"01:00", team1:"스페인", team2:"사우디 아라비아", group:"H", stadium:"애틀랜타 스타디움" },
+            { id:38, month:6, day:22, time:"04:00", team1:"벨기에", team2:"이란", group:"G", stadium:"로스앤젤레스 스타디움" },
+            { id:39, month:6, day:22, time:"07:00", team1:"우루과이", team2:"카보베르데", group:"H", stadium:"마이애미 스타디움" },
+            { id:40, month:6, day:22, time:"10:00", team1:"뉴질랜드", team2:"이집트", group:"G", stadium:"BC 플레이스 밴쿠버" },
+            { id:41, month:6, day:23, time:"02:00", team1:"아르헨티나", team2:"오스트리아", group:"J", stadium:"댈러스 스타디움" },
+            { id:42, month:6, day:23, time:"06:00", team1:"프랑스", team2:"대륙간 PO 2", group:"I", stadium:"필라델피아 스타디움" },
+            { id:43, month:6, day:23, time:"09:00", team1:"노르웨이", team2:"세네갈", group:"I", stadium:"뉴욕 뉴저지 스타디움" },
+            { id:44, month:6, day:23, time:"12:00", team1:"요르단", team2:"알제리", group:"J", stadium:"SF 베이 에어리어" },
+            { id:45, month:6, day:24, time:"02:00", team1:"포르투갈", team2:"우즈베키스탄", group:"K", stadium:"휴스턴 스타디움" },
+            { id:46, month:6, day:24, time:"05:00", team1:"잉글랜드", team2:"가나", group:"L", stadium:"보스턴 스타디움" },
+            { id:47, month:6, day:24, time:"08:00", team1:"파나마", team2:"크로아티아", group:"L", stadium:"토론토 스타디움" },
+            { id:48, month:6, day:24, time:"11:00", team1:"콜롬비아", team2:"대륙간 PO 1", group:"K", stadium:"에스타디오 과달라하라" },
+            { id:49, month:6, day:25, time:"04:00", team1:"스위스", team2:"캐나다", group:"B", stadium:"BC 플레이스 밴쿠버" },
+            { id:50, month:6, day:25, time:"04:00", team1:"UEFA PO A", team2:"카타르", group:"B", stadium:"시애틀 스타디움" },
+            { id:51, month:6, day:25, time:"07:00", team1:"스코틀랜드", team2:"브라질", group:"C", stadium:"마이애미 스타디움" },
+            { id:52, month:6, day:25, time:"07:00", team1:"모로코", team2:"아이티", group:"C", stadium:"애틀랜타 스타디움" },
+            { id:53, month:6, day:25, time:"10:00", team1:"UEFA PO D", team2:"멕시코", group:"A", stadium:"멕시코시티 스타디움" },
+            { id:54, month:6, day:25, time:"10:00", team1:"남아프리카 공화국", team2:"대한민국", group:"A", stadium:"에스타디오 몬테레이" },
+            { id:55, month:6, day:26, time:"05:00", team1:"에콰도르", team2:"독일", group:"E", stadium:"뉴욕 뉴저지 스타디움" },
+            { id:56, month:6, day:26, time:"05:00", team1:"퀴라소", team2:"코트디부아르", group:"E", stadium:"필라델피아 스타디움" },
+            { id:57, month:6, day:26, time:"08:00", team1:"튀니지", team2:"네덜란드", group:"F", stadium:"댈러스 스타디움" },
+            { id:58, month:6, day:26, time:"08:00", team1:"일본", team2:"UEFA PO B", group:"F", stadium:"캔자스시티 스타디움" },
+            { id:59, month:6, day:26, time:"11:00", team1:"UEFA PO C", team2:"미국", group:"D", stadium:"로스앤젤레스 스타디움" },
+            { id:60, month:6, day:26, time:"11:00", team1:"파라과이", team2:"호주", group:"D", stadium:"SF 베이 에어리어" },
+            { id:61, month:6, day:27, time:"04:00", team1:"노르웨이", team2:"프랑스", group:"I", stadium:"보스턴 스타디움" },
+            { id:62, month:6, day:27, time:"04:00", team1:"세네갈", team2:"대륙간 PO 2", group:"I", stadium:"토론토 스타디움" },
+            { id:63, month:6, day:27, time:"09:00", team1:"우루과이", team2:"스페인", group:"H", stadium:"에스타디오 과달라하라" },
+            { id:64, month:6, day:27, time:"09:00", team1:"카보베르데", team2:"사우디 아라비아", group:"H", stadium:"휴스턴 스타디움" },
+            { id:65, month:6, day:27, time:"12:00", team1:"뉴질랜드", team2:"벨기에", group:"G", stadium:"BC 플레이스 밴쿠버" },
+            { id:66, month:6, day:27, time:"12:00", team1:"이집트", team2:"이란", group:"G", stadium:"시애틀 스타디움" },
+            { id:67, month:6, day:28, time:"06:00", team1:"파나마", team2:"잉글랜드", group:"L", stadium:"뉴욕 뉴저지 스타디움" },
+            { id:68, month:6, day:28, time:"06:00", team1:"크로아티아", team2:"가나", group:"L", stadium:"필라델피아 스타디움" },
+            { id:69, month:6, day:28, time:"08:30", team1:"콜롬비아", team2:"포르투갈", group:"K", stadium:"마이애미 스타디움" },
+            { id:70, month:6, day:28, time:"08:30", team1:"대륙간 PO 1", team2:"우즈베키스탄", group:"K", stadium:"애틀랜타 스타디움" },
+            { id:71, month:6, day:28, time:"11:00", team1:"요르단", team2:"아르헨티나", group:"J", stadium:"댈러스 스타디움" },
+            { id:72, month:6, day:28, time:"11:00", team1:"알제리", team2:"오스트리아", group:"J", stadium:"캔자스시티 스타디움" }
         ];
 
-        // --- State Management ---
         let currentGroup = 'ALL';
         let searchQuery = '';
-        let currentView = 'calendar'; // Default to calendar
         let currentMonth = 6; 
 
-        // --- DOM Elements ---
-        const matchListContainer = document.getElementById('match-list-container');
-        const calendarGridContainer = document.getElementById('calendar-grid-container');
-        const calendarTitle = document.getElementById('calendar-title');
-        const searchInput = document.getElementById('search-input');
-        const groupFilters = document.getElementById('group-filters');
-        const listViewDiv = document.getElementById('list-view');
-        const calendarViewDiv = document.getElementById('calendar-view');
-        const noResultsList = document.getElementById('no-results-list');
-        const dDayElement = document.getElementById('d-day');
-        const prevMonthBtn = document.getElementById('prev-month-btn');
-        const nextMonthBtn = document.getElementById('next-month-btn');
-
-        // --- Init ---
-        function init() {
+        // Init
+        const init = () => {
             renderGroupButtons();
-            // Start with calendar view
-            switchView('calendar');
-            calculateDDay();
-            
-            searchInput.addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase();
-                renderList(); 
-                renderCalendar();
-            });
-        }
-
-        // --- All Schedule Download (Merged ICS) ---
-        function downloadAllICS() {
-            let events = "";
-            const year = 2026;
-            const now = new Date().toISOString().replace(/[-:.]/g, '');
-
-            rawData.forEach(match => {
-                const monthStr = match.month < 10 ? `0${match.month}` : `${match.month}`;
-                const dayStr = match.day < 10 ? `0${match.day}` : `${match.day}`;
-                const parts = match.time.split(':');
-                const hour = parts[0];
-                const minute = parts[1];
-                
-                const startStr = `${year}${monthStr}${dayStr}T${hour}${minute}00`;
-                const endHour = parseInt(hour) + 2;
-                const endStr = `${year}${monthStr}${dayStr}T${endHour < 10 ? '0'+endHour : endHour}${minute}00`;
-
-                const summary = `[월드컵] ${match.team1} vs ${match.team2}`;
-                const description = `Group ${match.group} 경기\n경기장: ${match.stadium}`;
-                const location = match.stadium;
-                const uid = `${match.id}@wc2026.com`;
-
-                events += `BEGIN:VEVENT
-UID:${uid}
-DTSTAMP:${now}
-DTSTART:${startStr}
-DTEND:${endStr}
-SUMMARY:${summary}
-DESCRIPTION:${description}
-LOCATION:${location}
-END:VEVENT
-`;
-            });
-
-            const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//WC2026//FullSchedule//KO
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-X-WR-CALNAME:2026 월드컵 전체 일정
-${events}END:VCALENDAR`;
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `wc2026_full_schedule.ics`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function calculateDDay() {
-            const today = new Date();
-            const target = new Date('2026-06-12T00:00:00+09:00'); 
-            const diff = target - today;
-            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            dDayElement.innerText = days > 0 ? `D-${days}` : (days === 0 ? "D-Day" : "진행중");
-        }
-
-        window.switchView = function(view) {
-            currentView = view;
-            const btnList = document.getElementById('btn-list');
-            const btnCalendar = document.getElementById('btn-calendar');
-
-            if (view === 'list') {
-                listViewDiv.classList.remove('hidden-transition');
-                listViewDiv.classList.add('visible-transition');
-                calendarViewDiv.classList.add('hidden-transition');
-                calendarViewDiv.classList.remove('visible-transition');
-                
-                btnList.classList.add('bg-white', 'text-gray-800', 'shadow-sm');
-                btnList.classList.remove('text-gray-500');
-                btnCalendar.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
-                btnCalendar.classList.add('text-gray-500');
-                renderList();
-            } else {
-                listViewDiv.classList.add('hidden-transition');
-                listViewDiv.classList.remove('visible-transition');
-                calendarViewDiv.classList.remove('hidden-transition');
-                calendarViewDiv.classList.add('visible-transition');
-                
-                btnCalendar.classList.add('bg-white', 'text-gray-800', 'shadow-sm');
-                btnCalendar.classList.remove('text-gray-500');
-                btnList.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
-                btnList.classList.add('text-gray-500');
-                renderCalendar();
-            }
-        }
-
-        window.changeMonth = function(delta) {
-            currentMonth += delta;
-            if (currentMonth < 6) currentMonth = 6;
-            if (currentMonth > 6) currentMonth = 6; // Only June has groups
             renderCalendar();
-        }
-
-        function renderGroupButtons() {
-            const groups = [...new Set(rawData.map(m => m.group))].sort();
-            groups.forEach(group => {
-                const btn = document.createElement('button');
-                btn.className = 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition';
-                btn.innerText = `Group ${group}`;
-                btn.onclick = () => filterMatches(group);
-                groupFilters.appendChild(btn);
+            calculateDDay();
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderCalendar();
+                renderList();
             });
-        }
+            window.addEventListener('resize', renderCalendar); // Re-render on resize
+        };
 
-        window.filterMatches = function(group) {
-            currentGroup = group;
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => {
-                let isActive = false;
-                if (group === 'ALL' && btn.innerText === '전체') isActive = true;
-                if (btn.innerText === `Group ${group}`) isActive = true;
+        const renderCalendar = () => {
+            const isMobile = window.innerWidth < 768;
+            document.getElementById('calendar-title').innerText = `2026년 ${currentMonth}월`;
+            document.getElementById('prev-month-btn').disabled = true; // fixed to june
+            document.getElementById('next-month-btn').disabled = true;
 
-                if (isActive) {
-                    btn.className = 'filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold shadow-md transition';
-                } else {
-                    btn.className = 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition';
-                }
-            });
-            if (currentView === 'list') renderList();
-            else renderCalendar();
-        }
-
-        function renderList() {
-            let filtered = rawData;
-            
-            if (currentGroup !== 'ALL') {
-                filtered = filtered.filter(m => m.group === currentGroup);
-            }
-
-            if (searchQuery) {
-                filtered = filtered.filter(m => 
-                    m.team1.toLowerCase().includes(searchQuery) || 
-                    m.team2.toLowerCase().includes(searchQuery) ||
-                    m.stadium.toLowerCase().includes(searchQuery) ||
-                    (searchQuery.includes('조') && m.group.toLowerCase() === searchQuery.replace('조','').toLowerCase())
-                );
-            }
-
-            matchListContainer.innerHTML = '';
-            
-            if (filtered.length === 0) {
-                noResultsList.classList.remove('hidden');
+            if (isMobile) {
+                renderMobileCalendar();
             } else {
-                noResultsList.classList.add('hidden');
+                renderPcCalendar();
             }
+        };
 
-            filtered.forEach(match => {
-                const isKorea = match.team1 === '대한민국' || match.team2 === '대한민국';
-                
-                const card = document.createElement('div');
-                card.className = `bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col justify-between hover:shadow-md transition-shadow 
-                    ${isKorea ? 'korea-match' : ''}`;
-                
-                card.innerHTML = `
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs font-black text-blue-500 uppercase">Group ${match.group}</span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="w-5/12 text-center">
-                            <div class="mb-2 flex justify-center">${getFlagHTML(match.team1)}</div>
-                            <div class="font-bold text-gray-800 text-sm md:text-base break-words leading-tight ${match.team1==='대한민국'?'text-blue-700':''}">${match.team1}</div>
-                        </div>
-                        <div class="w-2/12 text-center text-xs text-gray-400 font-bold">VS</div>
-                        <div class="w-5/12 text-center">
-                            <div class="mb-2 flex justify-center">${getFlagHTML(match.team2)}</div>
-                            <div class="font-bold text-gray-800 text-sm md:text-base break-words leading-tight ${match.team2==='대한민국'?'text-blue-700':''}">${match.team2}</div>
-                        </div>
-                    </div>
+        const getMatches = (month, day) => {
+            let matches = rawData.filter(m => m.month === month && m.day === day);
+            if (currentGroup !== 'ALL') matches = matches.filter(m => m.group === currentGroup);
+            if (searchQuery) matches = matches.filter(m => 
+                m.team1.toLowerCase().includes(searchQuery) || m.team2.toLowerCase().includes(searchQuery)
+            );
+            return matches;
+        };
 
-                    <div class="mt-auto pt-2 border-t border-gray-50 flex justify-between items-center">
-                        <div class="flex flex-col">
-                            <span class="text-xs text-gray-500 font-medium">${match.date}</span>
-                            <span class="text-xs text-gray-400 mt-0.5">📍 ${match.stadium.replace(' 스타디움','').replace('에스타디오 ','')} <span class="text-[10px] text-gray-400 block sm:inline">(${getCapacity(match.stadium)})</span></span>
-                        </div>
-                        <span class="text-sm font-bold text-gray-900 bg-gray-100 px-2 py-0.5 rounded">${match.time}</span>
-                    </div>
-                `;
-                matchListContainer.appendChild(card);
-            });
-        }
-
-        function renderCalendar() {
-            calendarTitle.innerText = `2026년 ${currentMonth}월`;
-            prevMonthBtn.disabled = true; // Fixed to June
-            nextMonthBtn.disabled = true;
+        const renderPcCalendar = () => {
+            const grid = document.getElementById('pc-calendar-grid');
+            grid.innerHTML = '';
             
-            calendarGridContainer.innerHTML = '';
+            const emptyStart = 1; // June 1st is Mon
+            for(let i=0; i<emptyStart; i++) grid.appendChild(createEl('div', 'bg-gray-50 border-b border-gray-100'));
 
-            // 1. Headers (Inject first)
-            const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-            daysOfWeek.forEach((day, index) => {
-                const header = document.createElement('div');
-                header.className = 'calendar-header-cell';
-                if (index === 0) header.classList.add('text-red-500');
-                if (index === 6) header.classList.add('text-blue-500');
-                header.innerText = day;
-                calendarGridContainer.appendChild(header);
-            });
-
-            // 2. Empty slots (June 1st is Mon => 1 empty slot)
-            const emptyStart = 1; 
-            for(let i=0; i<emptyStart; i++) {
-                const emptyCell = document.createElement('div');
-                emptyCell.className = 'bg-gray-50 min-h-[100px] border-b border-gray-100'; // Match style if needed, or keep simpler
-                calendarGridContainer.appendChild(emptyCell);
-            }
-
-            // 3. Days
-            const totalDays = 30;
-            for(let day=1; day<=totalDays; day++) {
-                const cell = document.createElement('div');
-                cell.className = 'calendar-day border-b border-r border-gray-100 relative group hover:bg-blue-50/30 transition';
+            for(let day=1; day<=30; day++) {
+                const cell = createEl('div', 'calendar-day border-b border-r border-gray-100');
+                cell.innerHTML = `<div class="text-xs font-bold text-gray-400 mb-1">${day}</div>`;
                 
-                const dateNum = document.createElement('div');
-                dateNum.className = 'text-xs font-bold text-gray-400 mb-1';
-                dateNum.innerText = day;
-                cell.appendChild(dateNum);
-
-                // Filter Logic for Calendar
-                let matches = rawData.filter(m => m.month === currentMonth && m.day === day);
-                
-                if (currentGroup !== 'ALL') {
-                    matches = matches.filter(m => m.group === currentGroup);
-                }
-                if (searchQuery) {
-                    matches = matches.filter(m => 
-                        m.team1.toLowerCase().includes(searchQuery) || 
-                        m.team2.toLowerCase().includes(searchQuery)
-                    );
-                }
-
-                const matchContainer = document.createElement('div');
-                matchContainer.className = 'flex flex-col gap-1';
-                
+                const matches = getMatches(currentMonth, day);
                 matches.forEach(m => {
-                    const isKorea = m.team1 === '대한민국' || m.team2 === '대한민국';
-                    
-                    const pill = document.createElement('div');
-                    
-                    let baseClass = 'bg-gray-100 text-gray-600';
-                    if (isKorea) baseClass = 'korea-match-calendar';
-
-                    pill.className = `block text-[10px] md:text-xs px-1.5 py-0.5 rounded truncate cursor-default transition ${baseClass}`;
-                    
-                    pill.innerHTML = `
-                        <span class="font-bold mr-1">${m.time.split(':')[0]}시</span>
-                        ${m.team1.substring(0,6)} vs ${m.team2.substring(0,6)}
-                    `;
-                    matchContainer.appendChild(pill);
+                    const isKr = m.team1 === '대한민국' || m.team2 === '대한민국';
+                    const dimmed = currentGroup !== 'ALL' && m.group !== currentGroup ? 'dimmed' : '';
+                    const div = createEl('div', `block text-[10px] md:text-xs px-1.5 py-0.5 rounded truncate cursor-default ${isKr?'korea-match-calendar':'bg-gray-100 text-gray-600'} ${dimmed}`);
+                    div.innerHTML = `<span class="font-bold mr-1">${m.time.split(':')[0]}시</span>${m.team1.substring(0,4)} vs ${m.team2.substring(0,4)}`;
+                    cell.appendChild(div);
                 });
-
-                cell.appendChild(matchContainer);
-                calendarGridContainer.appendChild(cell);
+                grid.appendChild(cell);
             }
-        }
+        };
+
+        const renderMobileCalendar = () => {
+            const container = document.getElementById('mobile-calendar-container');
+            container.innerHTML = '';
+            
+            const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+            
+            for(let day=1; day<=30; day++) {
+                // June 2026 starts on Monday (1st=Mon, index 1)
+                const weekDayIndex = (day) % 7; 
+                const weekDay = daysOfWeek[weekDayIndex];
+                
+                const matches = getMatches(currentMonth, day);
+                
+                // Show day if matches exist OR if filtering is clear (show full calendar structure)
+                // Let's show all days to be a proper "Calendar"
+                const dayBlock = createEl('div', 'mobile-calendar-day');
+                
+                // Header Color
+                let dateColorClass = 'text-gray-800';
+                if(weekDay === '일') dateColorClass = 'text-red-500';
+                if(weekDay === '토') dateColorClass = 'text-blue-500';
+
+                dayBlock.innerHTML = `<div class="mobile-date-header ${dateColorClass}">
+                    <span>${day}</span><span class="text-sm font-normal text-gray-500">${weekDay}</span>
+                </div>`;
+
+                if (matches.length === 0) {
+                    dayBlock.innerHTML += `<div class="text-xs text-gray-300 py-2">경기 없음</div>`;
+                } else {
+                    matches.forEach(m => {
+                        const isKr = m.team1 === '대한민국' || m.team2 === '대한민국';
+                        const card = createEl('div', `mobile-match-card ${isKr?'korea':''}`);
+                        card.innerHTML = `
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-blue-600">Group ${m.group}</span>
+                                <span class="text-xs font-bold text-gray-700 bg-white px-2 py-0.5 rounded border">${m.time}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 w-5/12 overflow-hidden">
+                                    ${getFlag(m.team1)}
+                                    <span class="text-sm font-bold truncate ${isKr && m.team1==='대한민국'?'korea-match-text text-blue-700':''}">${m.team1}</span>
+                                </div>
+                                <span class="text-xs text-gray-400 font-bold">vs</span>
+                                <div class="flex items-center gap-2 w-5/12 justify-end overflow-hidden">
+                                    <span class="text-sm font-bold truncate ${isKr && m.team2==='대한민국'?'korea-match-text text-blue-700':''}">${m.team2}</span>
+                                    ${getFlag(m.team2)}
+                                </div>
+                            </div>
+                            <div class="mt-2 text-[10px] text-gray-400 text-right">
+                                📍 ${m.stadium.replace(' 스타디움','').replace('에스타디오 ','')} ${getCapacity(m.stadium)}
+                            </div>
+                        `;
+                        dayBlock.appendChild(card);
+                    });
+                }
+                container.appendChild(dayBlock);
+            }
+        };
+
+        // ... Existing Helpers (switchView, filterMatches, renderList, createEl, downloadAllICS, dDay) ...
+        const createEl = (tag, cls) => { const el = document.createElement(tag); if(cls) el.className = cls; return el; };
+        
+        window.switchView = (view) => {
+            document.getElementById('list-view').classList.toggle('hidden', view !== 'list');
+            document.getElementById('calendar-view').classList.toggle('hidden', view !== 'calendar');
+            const btns = { list: document.getElementById('btn-list'), calendar: document.getElementById('btn-calendar') };
+            btns[view].className = "flex-1 px-4 py-2 rounded-md text-sm font-bold shadow-sm bg-white text-gray-800 transition";
+            btns[view==='list'?'calendar':'list'].className = "flex-1 px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition";
+            if(view === 'list') renderList();
+        };
+
+        const renderList = () => {
+            const container = document.getElementById('match-list-container');
+            container.innerHTML = '';
+            let hasResult = false;
+            rawData.forEach(m => {
+                let show = true;
+                if(currentGroup !== 'ALL' && m.group !== currentGroup) show = false;
+                if(searchQuery && !(m.team1.toLowerCase().includes(searchQuery) || m.team2.toLowerCase().includes(searchQuery))) show = false;
+                
+                if(show) {
+                    hasResult = true;
+                    const isKr = m.team1 === '대한민국' || m.team2 === '대한민국';
+                    const card = createEl('div', `bg-white rounded-xl p-4 shadow-sm border border-gray-100 ${isKr?'korea-match':''}`);
+                    card.innerHTML = `
+                        <div class="flex justify-between mb-3"><span class="text-xs font-black text-blue-500">Group ${m.group}</span><span class="text-xs text-gray-500">${m.month}.${m.day} (${['일','월','화','수','목','금','토'][new Date(2026, m.month-1, m.day).getDay()]}) ${m.time}</span></div>
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="text-center w-5/12">${getFlag(m.team1)}<div class="font-bold text-sm mt-1 ${isKr&&m.team1==='대한민국'?'text-blue-700':''}">${m.team1}</div></div>
+                            <div class="text-xs font-bold text-gray-400">VS</div>
+                            <div class="text-center w-5/12">${getFlag(m.team2)}<div class="font-bold text-sm mt-1 ${isKr&&m.team2==='대한민국'?'text-blue-700':''}">${m.team2}</div></div>
+                        </div>
+                        <div class="text-[10px] text-gray-400 text-center border-t pt-2 mt-2">📍 ${m.stadium}</div>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+            document.getElementById('no-results-list').classList.toggle('hidden', hasResult);
+        };
+
+        const renderGroupButtons = () => {
+            const groups = [...new Set(rawData.map(m=>m.group))].sort();
+            const c = document.getElementById('group-filters');
+            groups.forEach(g => {
+                const b = createEl('button', 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-50 hover:text-blue-600 transition ml-2');
+                b.innerText = `Group ${g}`;
+                b.onclick = () => filterMatches(g);
+                c.appendChild(b);
+            });
+        };
+
+        window.filterMatches = (g) => {
+            currentGroup = g;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                const active = (g==='ALL' && b.innerText==='전체') || b.innerText===`Group ${g}`;
+                b.className = active ? 'filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md transition ml-2' : 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-50 hover:text-blue-600 transition ml-2';
+            });
+            renderCalendar();
+            renderList();
+        };
+
+        const calculateDDay = () => {
+            const diff = new Date('2026-06-12T00:00:00+09:00') - new Date();
+            const d = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('d-day').innerText = d > 0 ? `D-${d}` : (d === 0 ? "D-Day" : "진행중");
+        };
+
+        const downloadAllICS = () => {
+            let e = "";
+            rawData.forEach(m => {
+                const s = `202606${m.day<10?'0'+m.day:m.day}T${m.time.replace(':','')}00`;
+                const end = `202606${m.day<10?'0'+m.day:m.day}T${parseInt(m.time.split(':')[0])+2}${m.time.split(':')[1]}00`;
+                e += `BEGIN:VEVENT\nDTSTART:${s}\nDTEND:${end}\nSUMMARY:[WC] ${m.team1} vs ${m.team2}\nDESCRIPTION:Group ${m.group}\nLOCATION:${m.stadium}\nEND:VEVENT\n`;
+            });
+            const b = new Blob([`BEGIN:VCALENDAR\nVERSION:2.0\n${e}END:VCALENDAR`], {type:'text/calendar'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'wc2026.ics'; a.click();
+        };
+
+        // Placeholder for month change (fixed to June)
+        window.changeMonth = () => {}; 
 
         init();
     </script>
