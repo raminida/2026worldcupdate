@@ -26,24 +26,30 @@
 
         .calendar-header-cell {
             background-color: #f3f4f6;
-            padding: 0.75rem;
+            padding: 0.5rem;
             text-align: center;
             font-weight: 700;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             color: #4b5563;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        @media (min-width: 768px) {
+            .calendar-header-cell { padding: 0.75rem; font-size: 0.875rem; }
+        }
 
         .calendar-day {
             background-color: white;
             min-height: 100px;
-            padding: 0.5rem;
+            padding: 0.25rem;
+        }
+        @media (min-width: 768px) {
+            .calendar-day { padding: 0.5rem; }
         }
         
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
@@ -98,18 +104,18 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <i class="fas fa-futbol text-yellow-400 text-2xl"></i>
-                        <h1 class="text-2xl font-black tracking-tight">2026 FIFA 월드컵</h1>
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight">2026 FIFA 월드컵</h1>
                     </div>
                     <p class="text-blue-200 text-xs mt-1 font-medium ml-8">📅 한국시간(KST) 기준</p>
                 </div>
                 
-                <div class="flex items-center gap-3">
-                    <button onclick="downloadAllICS()" class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs md:text-sm font-bold py-2 px-4 rounded-full shadow-lg transition flex items-center gap-2">
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+                    <button onclick="downloadAllICS()" class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs md:text-sm font-bold py-2 px-4 rounded-full shadow-lg transition flex items-center gap-2 whitespace-nowrap">
                         <i class="fas fa-download"></i>
-                        <span>전체 일정 다운로드 (.ics)</span>
+                        <span>전체 일정 다운로드</span>
                     </button>
                     <!-- D-Day Counter -->
-                    <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 hidden md:block">
+                    <div class="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20">
                         <span id="d-day" class="text-lg font-bold text-yellow-400 font-mono">D-000</span>
                     </div>
                 </div>
@@ -118,42 +124,42 @@
     </header>
 
     <!-- Controls & Filters -->
-    <div class="max-w-[95%] mx-auto mt-6 px-4 space-y-4"> 
+    <div class="max-w-[95%] mx-auto mt-4 px-2 space-y-4"> 
         
         <!-- Search & View Toggle -->
-        <div class="flex flex-col md:flex-row gap-4 justify-between bg-white p-4 rounded-xl shadow-sm">
+        <div class="flex flex-col md:flex-row gap-4 justify-between bg-white p-3 md:p-4 rounded-xl shadow-sm">
             <div class="relative flex-grow max-w-md">
                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                 <input type="text" id="search-input" placeholder="국가명/조 검색 (예: 대한민국, A조)" 
-                       class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                       class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-sm md:text-base">
             </div>
             
             <div class="flex bg-gray-100 p-1 rounded-lg">
-                <button onclick="switchView('list')" id="btn-list" class="flex-1 px-4 py-2 rounded-md text-sm font-bold shadow-sm bg-white text-gray-800 transition">
+                <button onclick="switchView('list')" id="btn-list" class="flex-1 px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition">
                     <i class="fas fa-list mr-1"></i> 리스트
                 </button>
-                <button onclick="switchView('calendar')" id="btn-calendar" class="flex-1 px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition">
+                <button onclick="switchView('calendar')" id="btn-calendar" class="flex-1 px-4 py-2 rounded-md text-sm font-bold shadow-sm bg-white text-gray-800 transition">
                     <i class="far fa-calendar-alt mr-1"></i> 달력
                 </button>
             </div>
         </div>
 
         <!-- Group Filter -->
-        <div id="filter-container" class="bg-white p-4 rounded-xl shadow-sm overflow-x-auto transition-all duration-300">
+        <div id="filter-container" class="bg-white p-3 md:p-4 rounded-xl shadow-sm overflow-x-auto transition-all duration-300">
             <h3 class="text-xs font-bold text-gray-400 mb-2 uppercase">Groups</h3>
             <div class="flex gap-2 min-w-max" id="group-filters">
-                <button onclick="filterMatches('ALL')" class="filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition">전체</button>
+                <button onclick="filterMatches('ALL')" class="filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold shadow-md transition">전체</button>
                 <!-- Group Buttons injected here -->
             </div>
         </div>
     </div>
 
     <!-- Main Content Area -->
-    <div class="max-w-[95%] mx-auto mt-6 px-4 relative min-h-[500px]"> 
+    <div class="max-w-[95%] mx-auto mt-4 px-2 relative min-h-[500px]"> 
         
         <!-- List View -->
-        <div id="list-view" class="visible-transition">
-            <div id="match-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"> 
+        <div id="list-view" class="hidden-transition">
+            <div id="match-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4"> 
                 <!-- Cards injected here -->
             </div>
             <div id="no-results-list" class="hidden text-center py-20">
@@ -163,10 +169,10 @@
         </div>
 
         <!-- Calendar View -->
-        <div id="calendar-view" class="hidden-transition">
+        <div id="calendar-view" class="visible-transition">
             <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
-                <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                    <div class="flex items-center gap-4">
+                <div class="p-3 md:p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                    <div class="flex items-center gap-4 mx-auto md:mx-0">
                         <button onclick="changeMonth(-1)" id="prev-month-btn" class="cal-nav-btn"><i class="fas fa-chevron-left"></i></button>
                         <h2 class="text-lg font-bold text-gray-800 w-32 text-center" id="calendar-title">2026년 6월</h2>
                         <button onclick="changeMonth(1)" id="next-month-btn" class="cal-nav-btn"><i class="fas fa-chevron-right"></i></button>
@@ -175,7 +181,7 @@
                 
                 <!-- Scroll Wrapper for Responsive Calendar -->
                 <div class="overflow-x-auto pb-2"> 
-                    <div class="min-w-[1000px]"> 
+                    <div class="min-w-[800px] md:min-w-[1000px]"> 
                         <!-- Unified Calendar Grid -->
                         <div id="calendar-grid-container" class="calendar-grid">
                             <!-- Headers and Cells injected here together -->
@@ -188,6 +194,28 @@
     </div>
 
     <script>
+        // --- Capacities ---
+        const stadiumInfo = {
+            "멕시코시티 스타디움": "약 87,523석", // Estadio Azteca
+            "에스타디오 과달라하라": "약 49,850석", // Estadio Akron
+            "토론토 스타디움": "약 45,736석", // BMO Field
+            "로스앤젤레스 스타디움": "약 70,240석", // SoFi Stadium
+            "SF 베이 에어리어": "약 68,500석", // Levi's Stadium
+            "뉴욕 뉴저지 스타디움": "약 82,500석", // MetLife Stadium
+            "보스턴 스타디움": "약 65,878석", // Gillette Stadium
+            "BC 플레이스 밴쿠버": "약 54,500석", // BC Place
+            "휴스턴 스타디움": "약 72,220석", // NRG Stadium
+            "댈러스 스타디움": "약 80,000석", // AT&T Stadium
+            "필라델피아 스타디움": "약 69,796석", // Lincoln Financial Field
+            "에스타디오 몬테레이": "약 53,500석", // Estadio BBVA
+            "애틀랜타 스타디움": "약 71,000석", // Mercedes-Benz Stadium
+            "시애틀 스타디움": "약 69,000석", // Lumen Field
+            "마이애미 스타디움": "약 64,767석", // Hard Rock Stadium
+            "캔자스시티 스타디움": "약 76,416석" // Arrowhead Stadium
+        };
+
+        const getCapacity = (stadium) => stadiumInfo[stadium] || "정보 없음";
+
         // --- Country Codes for Flag Icons (ISO 3166-1 alpha-2) ---
         const teamCodes = {
             "멕시코": "mx", "남아프리카 공화국": "za", "대한민국": "kr", 
@@ -221,100 +249,100 @@
         // --- Data (조별리그만) ---
         const rawData = [
             // 6월 12일
-            { id: 1, date: "6월 12일 (금)", month: 6, day: 12, time: "04:00", team1: "멕시코", team2: "남아프리카 공화국", group: "A", stadium: "멕시코시티" },
-            { id: 2, date: "6월 12일 (금)", month: 6, day: 12, time: "11:00", team1: "대한민국", team2: "UEFA PO D", group: "A", stadium: "과달라하라" },
+            { id: 1, date: "6월 12일 (금)", month: 6, day: 12, time: "04:00", team1: "멕시코", team2: "남아프리카 공화국", group: "A", stadium: "멕시코시티 스타디움" },
+            { id: 2, date: "6월 12일 (금)", month: 6, day: 12, time: "11:00", team1: "대한민국", team2: "UEFA PO D", group: "A", stadium: "에스타디오 과달라하라" },
             // 6월 13일
-            { id: 3, date: "6월 13일 (토)", month: 6, day: 13, time: "04:00", team1: "캐나다", team2: "UEFA PO A", group: "B", stadium: "토론토" },
-            { id: 4, date: "6월 13일 (토)", month: 6, day: 13, time: "10:00", team1: "미국", team2: "파라과이", group: "D", stadium: "LA" },
+            { id: 3, date: "6월 13일 (토)", month: 6, day: 13, time: "04:00", team1: "캐나다", team2: "UEFA PO A", group: "B", stadium: "토론토 스타디움" },
+            { id: 4, date: "6월 13일 (토)", month: 6, day: 13, time: "10:00", team1: "미국", team2: "파라과이", group: "D", stadium: "로스앤젤레스 스타디움" },
             // 6월 14일
-            { id: 5, date: "6월 14일 (일)", month: 6, day: 14, time: "04:00", team1: "카타르", team2: "스위스", group: "B", stadium: "SF 베이" },
-            { id: 6, date: "6월 14일 (일)", month: 6, day: 14, time: "07:00", team1: "브라질", team2: "모로코", group: "C", stadium: "NY/NJ" },
-            { id: 7, date: "6월 14일 (일)", month: 6, day: 14, time: "10:00", team1: "아이티", team2: "스코틀랜드", group: "C", stadium: "보스턴" },
-            { id: 8, date: "6월 14일 (일)", month: 6, day: 14, time: "13:00", team1: "호주", team2: "UEFA PO C", group: "D", stadium: "밴쿠버" },
+            { id: 5, date: "6월 14일 (일)", month: 6, day: 14, time: "04:00", team1: "카타르", team2: "스위스", group: "B", stadium: "SF 베이 에어리어" },
+            { id: 6, date: "6월 14일 (일)", month: 6, day: 14, time: "07:00", team1: "브라질", team2: "모로코", group: "C", stadium: "뉴욕 뉴저지 스타디움" },
+            { id: 7, date: "6월 14일 (일)", month: 6, day: 14, time: "10:00", team1: "아이티", team2: "스코틀랜드", group: "C", stadium: "보스턴 스타디움" },
+            { id: 8, date: "6월 14일 (일)", month: 6, day: 14, time: "13:00", team1: "호주", team2: "UEFA PO C", group: "D", stadium: "BC 플레이스 밴쿠버" },
             // 6월 15일
-            { id: 9, date: "6월 15일 (월)", month: 6, day: 15, time: "02:00", team1: "독일", team2: "퀴라소", group: "E", stadium: "휴스턴" },
-            { id: 10, date: "6월 15일 (월)", month: 6, day: 15, time: "05:00", team1: "네덜란드", team2: "일본", group: "F", stadium: "댈러스" },
-            { id: 11, date: "6월 15일 (월)", month: 6, day: 15, time: "08:00", team1: "코트디부아르", team2: "에콰도르", group: "E", stadium: "필라델피아" },
-            { id: 12, date: "6월 15일 (월)", month: 6, day: 15, time: "11:00", team1: "UEFA PO B", team2: "튀니지", group: "F", stadium: "몬테레이" },
+            { id: 9, date: "6월 15일 (월)", month: 6, day: 15, time: "02:00", team1: "독일", team2: "퀴라소", group: "E", stadium: "휴스턴 스타디움" },
+            { id: 10, date: "6월 15일 (월)", month: 6, day: 15, time: "05:00", team1: "네덜란드", team2: "일본", group: "F", stadium: "댈러스 스타디움" },
+            { id: 11, date: "6월 15일 (월)", month: 6, day: 15, time: "08:00", team1: "코트디부아르", team2: "에콰도르", group: "E", stadium: "필라델피아 스타디움" },
+            { id: 12, date: "6월 15일 (월)", month: 6, day: 15, time: "11:00", team1: "UEFA PO B", team2: "튀니지", group: "F", stadium: "에스타디오 몬테레이" },
             // 6월 16일
-            { id: 13, date: "6월 16일 (화)", month: 6, day: 16, time: "01:00", team1: "스페인", team2: "카보베르데", group: "H", stadium: "애틀랜타" },
-            { id: 14, date: "6월 16일 (화)", month: 6, day: 16, time: "04:00", team1: "벨기에", team2: "이집트", group: "G", stadium: "시애틀" },
-            { id: 15, date: "6월 16일 (화)", month: 6, day: 16, time: "07:00", team1: "사우디 아라비아", team2: "우루과이", group: "H", stadium: "마이애미" },
-            { id: 16, date: "6월 16일 (화)", month: 6, day: 16, time: "10:00", team1: "이란", team2: "뉴질랜드", group: "G", stadium: "LA" },
+            { id: 13, date: "6월 16일 (화)", month: 6, day: 16, time: "01:00", team1: "스페인", team2: "카보베르데", group: "H", stadium: "애틀랜타 스타디움" },
+            { id: 14, date: "6월 16일 (화)", month: 6, day: 16, time: "04:00", team1: "벨기에", team2: "이집트", group: "G", stadium: "시애틀 스타디움" },
+            { id: 15, date: "6월 16일 (화)", month: 6, day: 16, time: "07:00", team1: "사우디 아라비아", team2: "우루과이", group: "H", stadium: "마이애미 스타디움" },
+            { id: 16, date: "6월 16일 (화)", month: 6, day: 16, time: "10:00", team1: "이란", team2: "뉴질랜드", group: "G", stadium: "로스앤젤레스 스타디움" },
             // 6월 17일
-            { id: 17, date: "6월 17일 (수)", month: 6, day: 17, time: "04:00", team1: "프랑스", team2: "세네갈", group: "I", stadium: "NY/NJ" },
-            { id: 18, date: "6월 17일 (수)", month: 6, day: 17, time: "07:00", team1: "대륙간 PO 2", team2: "노르웨이", group: "I", stadium: "보스턴" },
-            { id: 19, date: "6월 17일 (수)", month: 6, day: 17, time: "10:00", team1: "아르헨티나", team2: "알제리", group: "J", stadium: "캔자스시티" },
-            { id: 20, date: "6월 17일 (수)", month: 6, day: 17, time: "13:00", team1: "오스트리아", team2: "요르단", group: "J", stadium: "SF 베이" },
+            { id: 17, date: "6월 17일 (수)", month: 6, day: 17, time: "04:00", team1: "프랑스", team2: "세네갈", group: "I", stadium: "뉴욕 뉴저지 스타디움" },
+            { id: 18, date: "6월 17일 (수)", month: 6, day: 17, time: "07:00", team1: "대륙간 PO 2", team2: "노르웨이", group: "I", stadium: "보스턴 스타디움" },
+            { id: 19, date: "6월 17일 (수)", month: 6, day: 17, time: "10:00", team1: "아르헨티나", team2: "알제리", group: "J", stadium: "캔자스시티 스타디움" },
+            { id: 20, date: "6월 17일 (수)", month: 6, day: 17, time: "13:00", team1: "오스트리아", team2: "요르단", group: "J", stadium: "SF 베이 에어리어" },
             // 6월 18일
-            { id: 21, date: "6월 18일 (목)", month: 6, day: 18, time: "02:00", team1: "포르투갈", team2: "대륙간 PO 1", group: "K", stadium: "휴스턴" },
-            { id: 22, date: "6월 18일 (목)", month: 6, day: 18, time: "05:00", team1: "잉글랜드", team2: "크로아티아", group: "L", stadium: "댈러스" },
-            { id: 23, date: "6월 18일 (목)", month: 6, day: 18, time: "08:00", team1: "가나", team2: "파나마", group: "L", stadium: "토론토" },
-            { id: 24, date: "6월 18일 (목)", month: 6, day: 18, time: "11:00", team1: "우즈베키스탄", team2: "콜롬비아", group: "K", stadium: "멕시코시티" },
+            { id: 21, date: "6월 18일 (목)", month: 6, day: 18, time: "02:00", team1: "포르투갈", team2: "대륙간 PO 1", group: "K", stadium: "휴스턴 스타디움" },
+            { id: 22, date: "6월 18일 (목)", month: 6, day: 18, time: "05:00", team1: "잉글랜드", team2: "크로아티아", group: "L", stadium: "댈러스 스타디움" },
+            { id: 23, date: "6월 18일 (목)", month: 6, day: 18, time: "08:00", team1: "가나", team2: "파나마", group: "L", stadium: "토론토 스타디움" },
+            { id: 24, date: "6월 18일 (목)", month: 6, day: 18, time: "11:00", team1: "우즈베키스탄", team2: "콜롬비아", group: "K", stadium: "멕시코시티 스타디움" },
             // 6월 19일
-            { id: 25, date: "6월 19일 (금)", month: 6, day: 19, time: "01:00", team1: "UEFA PO D", team2: "남아프리카 공화국", group: "A", stadium: "애틀랜타" },
-            { id: 26, date: "6월 19일 (금)", month: 6, day: 19, time: "04:00", team1: "스위스", team2: "UEFA PO A", group: "B", stadium: "LA" },
-            { id: 27, date: "6월 19일 (금)", month: 6, day: 19, time: "07:00", team1: "캐나다", team2: "카타르", group: "B", stadium: "밴쿠버" },
-            { id: 28, date: "6월 19일 (금)", month: 6, day: 19, time: "10:00", team1: "멕시코", team2: "대한민국", group: "A", stadium: "과달라하라" },
+            { id: 25, date: "6월 19일 (금)", month: 6, day: 19, time: "01:00", team1: "UEFA PO D", team2: "남아프리카 공화국", group: "A", stadium: "애틀랜타 스타디움" },
+            { id: 26, date: "6월 19일 (금)", month: 6, day: 19, time: "04:00", team1: "스위스", team2: "UEFA PO A", group: "B", stadium: "로스앤젤레스 스타디움" },
+            { id: 27, date: "6월 19일 (금)", month: 6, day: 19, time: "07:00", team1: "캐나다", team2: "카타르", group: "B", stadium: "BC 플레이스 밴쿠버" },
+            { id: 28, date: "6월 19일 (금)", month: 6, day: 19, time: "10:00", team1: "멕시코", team2: "대한민국", group: "A", stadium: "에스타디오 과달라하라" },
             // 6월 20일
-            { id: 29, date: "6월 20일 (토)", month: 6, day: 20, time: "04:00", team1: "미국", team2: "호주", group: "D", stadium: "시애틀" },
-            { id: 30, date: "6월 20일 (토)", month: 6, day: 20, time: "07:00", team1: "스코틀랜드", team2: "모로코", group: "C", stadium: "보스턴" },
-            { id: 31, date: "6월 20일 (토)", month: 6, day: 20, time: "10:00", team1: "브라질", team2: "아이티", group: "C", stadium: "필라델피아" },
-            { id: 32, date: "6월 20일 (토)", month: 6, day: 20, time: "13:00", team1: "UEFA PO C", team2: "파라과이", group: "D", stadium: "SF 베이" },
+            { id: 29, date: "6월 20일 (토)", month: 6, day: 20, time: "04:00", team1: "미국", team2: "호주", group: "D", stadium: "시애틀 스타디움" },
+            { id: 30, date: "6월 20일 (토)", month: 6, day: 20, time: "07:00", team1: "스코틀랜드", team2: "모로코", group: "C", stadium: "보스턴 스타디움" },
+            { id: 31, date: "6월 20일 (토)", month: 6, day: 20, time: "10:00", team1: "브라질", team2: "아이티", group: "C", stadium: "필라델피아 스타디움" },
+            { id: 32, date: "6월 20일 (토)", month: 6, day: 20, time: "13:00", team1: "UEFA PO C", team2: "파라과이", group: "D", stadium: "SF 베이 에어리어" },
             // 6월 21일
-            { id: 33, date: "6월 21일 (일)", month: 6, day: 21, time: "02:00", team1: "네덜란드", team2: "UEFA PO B", group: "F", stadium: "휴스턴" },
-            { id: 34, date: "6월 21일 (일)", month: 6, day: 21, time: "05:00", team1: "독일", team2: "코트디부아르", group: "E", stadium: "토론토" },
-            { id: 35, date: "6월 21일 (일)", month: 6, day: 21, time: "09:00", team1: "에콰도르", team2: "퀴라소", group: "E", stadium: "캔자스시티" },
-            { id: 36, date: "6월 21일 (일)", month: 6, day: 21, time: "13:00", team1: "튀니지", team2: "일본", group: "F", stadium: "몬테레이" },
+            { id: 33, date: "6월 21일 (일)", month: 6, day: 21, time: "02:00", team1: "네덜란드", team2: "UEFA PO B", group: "F", stadium: "휴스턴 스타디움" },
+            { id: 34, date: "6월 21일 (일)", month: 6, day: 21, time: "05:00", team1: "독일", team2: "코트디부아르", group: "E", stadium: "토론토 스타디움" },
+            { id: 35, date: "6월 21일 (일)", month: 6, day: 21, time: "09:00", team1: "에콰도르", team2: "퀴라소", group: "E", stadium: "캔자스시티 스타디움" },
+            { id: 36, date: "6월 21일 (일)", month: 6, day: 21, time: "13:00", team1: "튀니지", team2: "일본", group: "F", stadium: "에스타디오 몬테레이" },
             // 6월 22일
-            { id: 37, date: "6월 22일 (월)", month: 6, day: 22, time: "01:00", team1: "스페인", team2: "사우디 아라비아", group: "H", stadium: "애틀랜타" },
-            { id: 38, date: "6월 22일 (월)", month: 6, day: 22, time: "04:00", team1: "벨기에", team2: "이란", group: "G", stadium: "LA" },
-            { id: 39, date: "6월 22일 (월)", month: 6, day: 22, time: "07:00", team1: "우루과이", team2: "카보베르데", group: "H", stadium: "마이애미" },
-            { id: 40, date: "6월 22일 (월)", month: 6, day: 22, time: "10:00", team1: "뉴질랜드", team2: "이집트", group: "G", stadium: "밴쿠버" },
+            { id: 37, date: "6월 22일 (월)", month: 6, day: 22, time: "01:00", team1: "스페인", team2: "사우디 아라비아", group: "H", stadium: "애틀랜타 스타디움" },
+            { id: 38, date: "6월 22일 (월)", month: 6, day: 22, time: "04:00", team1: "벨기에", team2: "이란", group: "G", stadium: "로스앤젤레스 스타디움" },
+            { id: 39, date: "6월 22일 (월)", month: 6, day: 22, time: "07:00", team1: "우루과이", team2: "카보베르데", group: "H", stadium: "마이애미 스타디움" },
+            { id: 40, date: "6월 22일 (월)", month: 6, day: 22, time: "10:00", team1: "뉴질랜드", team2: "이집트", group: "G", stadium: "BC 플레이스 밴쿠버" },
             // 6월 23일
-            { id: 41, date: "6월 23일 (화)", month: 6, day: 23, time: "02:00", team1: "아르헨티나", team2: "오스트리아", group: "J", stadium: "댈러스" },
-            { id: 42, date: "6월 23일 (화)", month: 6, day: 23, time: "06:00", team1: "프랑스", team2: "대륙간 PO 2", group: "I", stadium: "필라델피아" },
-            { id: 43, date: "6월 23일 (화)", month: 6, day: 23, time: "09:00", team1: "노르웨이", team2: "세네갈", group: "I", stadium: "NY/NJ" },
-            { id: 44, date: "6월 23일 (화)", month: 6, day: 23, time: "12:00", team1: "요르단", team2: "알제리", group: "J", stadium: "SF 베이" },
+            { id: 41, date: "6월 23일 (화)", month: 6, day: 23, time: "02:00", team1: "아르헨티나", team2: "오스트리아", group: "J", stadium: "댈러스 스타디움" },
+            { id: 42, date: "6월 23일 (화)", month: 6, day: 23, time: "06:00", team1: "프랑스", team2: "대륙간 PO 2", group: "I", stadium: "필라델피아 스타디움" },
+            { id: 43, date: "6월 23일 (화)", month: 6, day: 23, time: "09:00", team1: "노르웨이", team2: "세네갈", group: "I", stadium: "뉴욕 뉴저지 스타디움" },
+            { id: 44, date: "6월 23일 (화)", month: 6, day: 23, time: "12:00", team1: "요르단", team2: "알제리", group: "J", stadium: "SF 베이 에어리어" },
             // 6월 24일
-            { id: 45, date: "6월 24일 (수)", month: 6, day: 24, time: "02:00", team1: "포르투갈", team2: "우즈베키스탄", group: "K", stadium: "휴스턴" },
-            { id: 46, date: "6월 24일 (수)", month: 6, day: 24, time: "05:00", team1: "잉글랜드", team2: "가나", group: "L", stadium: "보스턴" },
-            { id: 47, date: "6월 24일 (수)", month: 6, day: 24, time: "08:00", team1: "파나마", team2: "크로아티아", group: "L", stadium: "토론토" },
-            { id: 48, date: "6월 24일 (수)", month: 6, day: 24, time: "11:00", team1: "콜롬비아", team2: "대륙간 PO 1", group: "K", stadium: "과달라하라" },
+            { id: 45, date: "6월 24일 (수)", month: 6, day: 24, time: "02:00", team1: "포르투갈", team2: "우즈베키스탄", group: "K", stadium: "휴스턴 스타디움" },
+            { id: 46, date: "6월 24일 (수)", month: 6, day: 24, time: "05:00", team1: "잉글랜드", team2: "가나", group: "L", stadium: "보스턴 스타디움" },
+            { id: 47, date: "6월 24일 (수)", month: 6, day: 24, time: "08:00", team1: "파나마", team2: "크로아티아", group: "L", stadium: "토론토 스타디움" },
+            { id: 48, date: "6월 24일 (수)", month: 6, day: 24, time: "11:00", team1: "콜롬비아", team2: "대륙간 PO 1", group: "K", stadium: "에스타디오 과달라하라" },
             // 6월 25일
-            { id: 49, date: "6월 25일 (목)", month: 6, day: 25, time: "04:00", team1: "스위스", team2: "캐나다", group: "B", stadium: "밴쿠버" },
-            { id: 50, date: "6월 25일 (목)", month: 6, day: 25, time: "04:00", team1: "UEFA PO A", team2: "카타르", group: "B", stadium: "시애틀" },
-            { id: 51, date: "6월 25일 (목)", month: 6, day: 25, time: "07:00", team1: "스코틀랜드", team2: "브라질", group: "C", stadium: "마이애미" },
-            { id: 52, date: "6월 25일 (목)", month: 6, day: 25, time: "07:00", team1: "모로코", team2: "아이티", group: "C", stadium: "애틀랜타" },
-            { id: 53, date: "6월 25일 (목)", month: 6, day: 25, time: "10:00", team1: "UEFA PO D", team2: "멕시코", group: "A", stadium: "멕시코시티" },
-            { id: 54, date: "6월 25일 (목)", month: 6, day: 25, time: "10:00", team1: "남아프리카 공화국", team2: "대한민국", group: "A", stadium: "몬테레이" },
+            { id: 49, date: "6월 25일 (목)", month: 6, day: 25, time: "04:00", team1: "스위스", team2: "캐나다", group: "B", stadium: "BC 플레이스 밴쿠버" },
+            { id: 50, date: "6월 25일 (목)", month: 6, day: 25, time: "04:00", team1: "UEFA PO A", team2: "카타르", group: "B", stadium: "시애틀 스타디움" },
+            { id: 51, date: "6월 25일 (목)", month: 6, day: 25, time: "07:00", team1: "스코틀랜드", team2: "브라질", group: "C", stadium: "마이애미 스타디움" },
+            { id: 52, date: "6월 25일 (목)", month: 6, day: 25, time: "07:00", team1: "모로코", team2: "아이티", group: "C", stadium: "애틀랜타 스타디움" },
+            { id: 53, date: "6월 25일 (목)", month: 6, day: 25, time: "10:00", team1: "UEFA PO D", team2: "멕시코", group: "A", stadium: "멕시코시티 스타디움" },
+            { id: 54, date: "6월 25일 (목)", month: 6, day: 25, time: "10:00", team1: "남아프리카 공화국", team2: "대한민국", group: "A", stadium: "에스타디오 몬테레이" },
             // 6월 26일
-            { id: 55, date: "6월 26일 (금)", month: 6, day: 26, time: "05:00", team1: "에콰도르", team2: "독일", group: "E", stadium: "NY/NJ" },
-            { id: 56, date: "6월 26일 (금)", month: 6, day: 26, time: "05:00", team1: "퀴라소", team2: "코트디부아르", group: "E", stadium: "필라델피아" },
-            { id: 57, date: "6월 26일 (금)", month: 6, day: 26, time: "08:00", team1: "튀니지", team2: "네덜란드", group: "F", stadium: "댈러스" },
-            { id: 58, date: "6월 26일 (금)", month: 6, day: 26, time: "08:00", team1: "일본", team2: "UEFA PO B", group: "F", stadium: "캔자스시티" },
-            { id: 59, date: "6월 26일 (금)", month: 6, day: 26, time: "11:00", team1: "UEFA PO C", team2: "미국", group: "D", stadium: "LA" },
-            { id: 60, date: "6월 26일 (금)", month: 6, day: 26, time: "11:00", team1: "파라과이", team2: "호주", group: "D", stadium: "SF 베이" },
+            { id: 55, date: "6월 26일 (금)", month: 6, day: 26, time: "05:00", team1: "에콰도르", team2: "독일", group: "E", stadium: "뉴욕 뉴저지 스타디움" },
+            { id: 56, date: "6월 26일 (금)", month: 6, day: 26, time: "05:00", team1: "퀴라소", team2: "코트디부아르", group: "E", stadium: "필라델피아 스타디움" },
+            { id: 57, date: "6월 26일 (금)", month: 6, day: 26, time: "08:00", team1: "튀니지", team2: "네덜란드", group: "F", stadium: "댈러스 스타디움" },
+            { id: 58, date: "6월 26일 (금)", month: 6, day: 26, time: "08:00", team1: "일본", team2: "UEFA PO B", group: "F", stadium: "캔자스시티 스타디움" },
+            { id: 59, date: "6월 26일 (금)", month: 6, day: 26, time: "11:00", team1: "UEFA PO C", team2: "미국", group: "D", stadium: "로스앤젤레스 스타디움" },
+            { id: 60, date: "6월 26일 (금)", month: 6, day: 26, time: "11:00", team1: "파라과이", team2: "호주", group: "D", stadium: "SF 베이 에어리어" },
             // 6월 27일
-            { id: 61, date: "6월 27일 (토)", month: 6, day: 27, time: "04:00", team1: "노르웨이", team2: "프랑스", group: "I", stadium: "보스턴" },
-            { id: 62, date: "6월 27일 (토)", month: 6, day: 27, time: "04:00", team1: "세네갈", team2: "대륙간 PO 2", group: "I", stadium: "토론토" },
-            { id: 63, date: "6월 27일 (토)", month: 6, day: 27, time: "09:00", team1: "우루과이", team2: "스페인", group: "H", stadium: "과달라하라" },
-            { id: 64, date: "6월 27일 (토)", month: 6, day: 27, time: "09:00", team1: "카보베르데", team2: "사우디 아라비아", group: "H", stadium: "휴스턴" },
-            { id: 65, date: "6월 27일 (토)", month: 6, day: 27, time: "12:00", team1: "뉴질랜드", team2: "벨기에", group: "G", stadium: "밴쿠버" },
-            { id: 66, date: "6월 27일 (토)", month: 6, day: 27, time: "12:00", team1: "이집트", team2: "이란", group: "G", stadium: "시애틀" },
+            { id: 61, date: "6월 27일 (토)", month: 6, day: 27, time: "04:00", team1: "노르웨이", team2: "프랑스", group: "I", stadium: "보스턴 스타디움" },
+            { id: 62, date: "6월 27일 (토)", month: 6, day: 27, time: "04:00", team1: "세네갈", team2: "대륙간 PO 2", group: "I", stadium: "토론토 스타디움" },
+            { id: 63, date: "6월 27일 (토)", month: 6, day: 27, time: "09:00", team1: "우루과이", team2: "스페인", group: "H", stadium: "에스타디오 과달라하라" },
+            { id: 64, date: "6월 27일 (토)", month: 6, day: 27, time: "09:00", team1: "카보베르데", team2: "사우디 아라비아", group: "H", stadium: "휴스턴 스타디움" },
+            { id: 65, date: "6월 27일 (토)", month: 6, day: 27, time: "12:00", team1: "뉴질랜드", team2: "벨기에", group: "G", stadium: "BC 플레이스 밴쿠버" },
+            { id: 66, date: "6월 27일 (토)", month: 6, day: 27, time: "12:00", team1: "이집트", team2: "이란", group: "G", stadium: "시애틀 스타디움" },
             // 6월 28일
-            { id: 67, date: "6월 28일 (일)", month: 6, day: 28, time: "06:00", team1: "파나마", team2: "잉글랜드", group: "L", stadium: "NY/NJ" },
-            { id: 68, date: "6월 28일 (일)", month: 6, day: 28, time: "06:00", team1: "크로아티아", team2: "가나", group: "L", stadium: "필라델피아" },
-            { id: 69, date: "6월 28일 (일)", month: 6, day: 28, time: "08:30", team1: "콜롬비아", team2: "포르투갈", group: "K", stadium: "마이애미" },
-            { id: 70, date: "6월 28일 (일)", month: 6, day: 28, time: "08:30", team1: "대륙간 PO 1", team2: "우즈베키스탄", group: "K", stadium: "애틀랜타" },
-            { id: 71, date: "6월 28일 (일)", month: 6, day: 28, time: "11:00", team1: "요르단", team2: "아르헨티나", group: "J", stadium: "댈러스" },
-            { id: 72, date: "6월 28일 (일)", month: 6, day: 28, time: "11:00", team1: "알제리", team2: "오스트리아", group: "J", stadium: "캔자스시티" }
+            { id: 67, date: "6월 28일 (일)", month: 6, day: 28, time: "06:00", team1: "파나마", team2: "잉글랜드", group: "L", stadium: "뉴욕 뉴저지 스타디움" },
+            { id: 68, date: "6월 28일 (일)", month: 6, day: 28, time: "06:00", team1: "크로아티아", team2: "가나", group: "L", stadium: "필라델피아 스타디움" },
+            { id: 69, date: "6월 28일 (일)", month: 6, day: 28, time: "08:30", team1: "콜롬비아", team2: "포르투갈", group: "K", stadium: "마이애미 스타디움" },
+            { id: 70, date: "6월 28일 (일)", month: 6, day: 28, time: "08:30", team1: "대륙간 PO 1", team2: "우즈베키스탄", group: "K", stadium: "애틀랜타 스타디움" },
+            { id: 71, date: "6월 28일 (일)", month: 6, day: 28, time: "11:00", team1: "요르단", team2: "아르헨티나", group: "J", stadium: "댈러스 스타디움" },
+            { id: 72, date: "6월 28일 (일)", month: 6, day: 28, time: "11:00", team1: "알제리", team2: "오스트리아", group: "J", stadium: "캔자스시티 스타디움" }
         ];
 
         // --- State Management ---
         let currentGroup = 'ALL';
         let searchQuery = '';
-        let currentView = 'list';
+        let currentView = 'calendar'; // Default to calendar
         let currentMonth = 6; 
 
         // --- DOM Elements ---
@@ -333,13 +361,14 @@
         // --- Init ---
         function init() {
             renderGroupButtons();
-            renderList();
-            renderCalendar();
+            // Start with calendar view
+            switchView('calendar');
             calculateDDay();
             
             searchInput.addEventListener('input', (e) => {
                 searchQuery = e.target.value.toLowerCase();
                 renderList(); 
+                renderCalendar();
             });
         }
 
@@ -417,6 +446,7 @@ ${events}END:VCALENDAR`;
                 btnList.classList.remove('text-gray-500');
                 btnCalendar.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
                 btnCalendar.classList.add('text-gray-500');
+                renderList();
             } else {
                 listViewDiv.classList.add('hidden-transition');
                 listViewDiv.classList.remove('visible-transition');
@@ -427,6 +457,7 @@ ${events}END:VCALENDAR`;
                 btnCalendar.classList.remove('text-gray-500');
                 btnList.classList.remove('bg-white', 'text-gray-800', 'shadow-sm');
                 btnList.classList.add('text-gray-500');
+                renderCalendar();
             }
         }
 
@@ -441,7 +472,7 @@ ${events}END:VCALENDAR`;
             const groups = [...new Set(rawData.map(m => m.group))].sort();
             groups.forEach(group => {
                 const btn = document.createElement('button');
-                btn.className = 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition';
+                btn.className = 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition';
                 btn.innerText = `Group ${group}`;
                 btn.onclick = () => filterMatches(group);
                 groupFilters.appendChild(btn);
@@ -457,13 +488,13 @@ ${events}END:VCALENDAR`;
                 if (btn.innerText === `Group ${group}`) isActive = true;
 
                 if (isActive) {
-                    btn.className = 'filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition';
+                    btn.className = 'filter-btn bg-gray-800 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold shadow-md transition';
                 } else {
-                    btn.className = 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition';
+                    btn.className = 'filter-btn bg-white text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs md:text-sm font-bold hover:bg-blue-50 hover:text-blue-600 transition';
                 }
             });
-            renderList();
-            renderCalendar(); 
+            if (currentView === 'list') renderList();
+            else renderCalendar();
         }
 
         function renderList() {
@@ -517,7 +548,7 @@ ${events}END:VCALENDAR`;
                     <div class="mt-auto pt-2 border-t border-gray-50 flex justify-between items-center">
                         <div class="flex flex-col">
                             <span class="text-xs text-gray-500 font-medium">${match.date}</span>
-                            <span class="text-xs text-gray-400 mt-0.5">📍 ${match.stadium}</span>
+                            <span class="text-xs text-gray-400 mt-0.5">📍 ${match.stadium.replace(' 스타디움','').replace('에스타디오 ','')} <span class="text-[10px] text-gray-400 block sm:inline">(${getCapacity(match.stadium)})</span></span>
                         </div>
                         <span class="text-sm font-bold text-gray-900 bg-gray-100 px-2 py-0.5 rounded">${match.time}</span>
                     </div>
@@ -563,20 +594,31 @@ ${events}END:VCALENDAR`;
                 dateNum.innerText = day;
                 cell.appendChild(dateNum);
 
-                const matches = rawData.filter(m => m.month === currentMonth && m.day === day);
+                // Filter Logic for Calendar
+                let matches = rawData.filter(m => m.month === currentMonth && m.day === day);
+                
+                if (currentGroup !== 'ALL') {
+                    matches = matches.filter(m => m.group === currentGroup);
+                }
+                if (searchQuery) {
+                    matches = matches.filter(m => 
+                        m.team1.toLowerCase().includes(searchQuery) || 
+                        m.team2.toLowerCase().includes(searchQuery)
+                    );
+                }
+
                 const matchContainer = document.createElement('div');
                 matchContainer.className = 'flex flex-col gap-1';
                 
                 matches.forEach(m => {
                     const isKorea = m.team1 === '대한민국' || m.team2 === '대한민국';
-                    const isDimmed = currentGroup !== 'ALL' && m.group !== currentGroup;
                     
                     const pill = document.createElement('div');
                     
                     let baseClass = 'bg-gray-100 text-gray-600';
                     if (isKorea) baseClass = 'korea-match-calendar';
 
-                    pill.className = `block text-[10px] md:text-xs px-1.5 py-0.5 rounded truncate cursor-default transition ${baseClass} ${isDimmed ? 'dimmed' : ''}`;
+                    pill.className = `block text-[10px] md:text-xs px-1.5 py-0.5 rounded truncate cursor-default transition ${baseClass}`;
                     
                     pill.innerHTML = `
                         <span class="font-bold mr-1">${m.time.split(':')[0]}시</span>
